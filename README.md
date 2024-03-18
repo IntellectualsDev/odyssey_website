@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # odyssey_website
 
 A new Flutter project.
@@ -14,3 +15,6 @@ A few resources to get you started if this is your first Flutter project:
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
+=======
+# odyssey_website
+>>>>>>> a556249021e5914a529473773e5b7ade3e438304
