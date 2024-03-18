@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:odyssey_website/Landing/controller_animation.dart';
 import 'package:odyssey_website/theme/my_colors.dart';
 
 class HeroSection extends StatefulWidget {
@@ -16,10 +17,13 @@ class _HeroSectionState extends State<HeroSection> {
 
     return <Widget>[
       SizedBox(
-        width: width,
-        child: Center(
+        width: screenWidth >= 1000 ? screenWidth * .5 : screenWidth,
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: screenWidth <= 1000
+                ? CrossAxisAlignment.center
+                : CrossAxisAlignment.start,
             children: <Widget>[
               // TypewriterText(text: "Full stack \nDeveloper",fontSize: fontSize,isBold: true,),
               const SelectableText(
@@ -33,11 +37,11 @@ class _HeroSectionState extends State<HeroSection> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: SizedBox(
-                    width: screenWidth / 4,
+                    //width: screenWidth / 4,
                     child: const SelectableText(
-                      "Start today and embark on a journey where arcade games meet the future",
-                      style: TextStyle(color: Colors.white),
-                    )),
+                  "Start today and embark on a journey where arcade games meet the future",
+                  style: TextStyle(color: Colors.white),
+                )),
               ),
               MaterialButton(
                 color: MyColors.action,
@@ -46,7 +50,7 @@ class _HeroSectionState extends State<HeroSection> {
                 onPressed: () {},
                 child: const Padding(
                   padding:
-                      EdgeInsets.symmetric(vertical: 20.0, horizontal: 40.0),
+                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
                   child: Text(
                     "Download",
                     style: TextStyle(color: Colors.white),
@@ -57,11 +61,9 @@ class _HeroSectionState extends State<HeroSection> {
           ),
         ),
       ),
-      SizedBox(
-        width: spacing,
-      ),
+
       //add other widget here to either be in horizontal or vertical
-      Container(child: Padding(padding: EdgeInsets.all(8),child: ,),)
+      Container(width: 500, child: const ControllerAnimation()),
     ];
   }
 
@@ -71,9 +73,9 @@ class _HeroSectionState extends State<HeroSection> {
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        if (constraints.maxWidth > 800) {
+        if (constraints.maxWidth >= 1000) {
           return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: pageChildren(constraints.biggest.width / 2),
           );
         } else {

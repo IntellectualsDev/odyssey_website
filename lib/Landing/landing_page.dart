@@ -47,6 +47,7 @@ bool isMobile = globals.isWebMobile;
           ),
           child:  Column(
             children: [
+              Text("Screen width $width", style: TextStyle(color: Colors.white),),
               Text('$isMobile', style: TextStyle(color: Colors.white),),
               HeroSection(),
               isMobile ? const Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
