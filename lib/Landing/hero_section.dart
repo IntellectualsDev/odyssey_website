@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:odyssey_website/Landing/controller_animation.dart';
 import 'package:odyssey_website/theme/my_colors.dart';
+import 'package:odyssey_website/globals.dart' as globals;
 
 class HeroSection extends StatefulWidget {
   const HeroSection({super.key});
@@ -63,7 +64,7 @@ class _HeroSectionState extends State<HeroSection> {
       ),
 
       //add other widget here to either be in horizontal or vertical
-      Container(width: 500, child: const ControllerAnimation()),
+      !globals.isWebMobile ? Container(width: 500, child: const ControllerAnimation()) : Container(),//TODO add container to explain for users to go on their desktop to download the game 
     ];
   }
 

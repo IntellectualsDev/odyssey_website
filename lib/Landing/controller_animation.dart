@@ -13,12 +13,12 @@ class ControllerAnimation extends StatelessWidget {
         ),
         Positioned(
           // Adjust the top, left, right, and bottom values to position the GIF as needed
-          top: 40, 
-          left: 110, 
+          top: 40,
+          left: 110,
           child: Image.asset(
             "assets/images/ControllerVideo.gif",
-            width: 278, 
-            height: 160, 
+            width: 278,
+            height: 160,
             fit: BoxFit.cover,
           ),
         ),

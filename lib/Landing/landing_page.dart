@@ -26,37 +26,46 @@ bool isMobile = globals.isWebMobile;
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double titleFontSize = width / 14;
+    debugPrint("$isMobile"); //check if platform is being run on mobile
 
     return Scaffold(
+              extendBodyBehindAppBar: true, // Extend gradient behind the app bar if present
+
       appBar: width <= 600 ? const MobileAppBar() : null,
       endDrawer: const MobileDrawer(),
-      body: SingleChildScrollView(
-          child: StickyHeader(
-        header: (width > 600)
-            ? const NavBar(
-                index: 0,
-              )
-            : Container(), //only show the navigation bar if the app bar is not there so just when the display is big enough
-        content: Container(
-          width: width,
-          decoration: const BoxDecoration(
+      body: Container(
+        decoration: BoxDecoration(
             gradient: LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: <Color>[MyColors.backgroundGradient1, MyColors.backgroundGradient2]),
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: <Color>[MyColors.backgroundGradient1, MyColors.backgroundGradient2],
+            ),),
+        child: SingleChildScrollView(
+            child: StickyHeader(
+          header: (width > 600)
+              ? const NavBar(
+                  index: 0,
+                )
+              : Container(), //only show the navigation bar if the app bar is not there so just when the display is big enough
+          content: Container(
+            width: width,
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
+                  colors: <Color>[MyColors.backgroundGradient1, MyColors.backgroundGradient2]),
+            ),
+            child:  Column(
+              children: [
+                Text("Screen width $width", style: TextStyle(color: Colors.white),),
+                HeroSection(),
+                isMobile ? const Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
+                
+              ],
+            ),
           ),
-          child:  Column(
-            children: [
-              Text("Screen width $width", style: TextStyle(color: Colors.white),),
-              Text('$isMobile', style: TextStyle(color: Colors.white),),
-              HeroSection(),
-              isMobile ? const Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
-              
-              
-            ],
-          ),
-        ),
-      )),
+        )),
+      ),
     );
   }
 }
