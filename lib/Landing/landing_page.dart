@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:odyssey_website/Landing/hero_section.dart';
 import 'package:odyssey_website/NavBar/mobileNavBar.dart';
 import 'package:odyssey_website/NavBar/navBar.dart';
 import 'package:odyssey_website/theme/my_colors.dart';
@@ -47,12 +48,10 @@ bool isMobile = globals.isWebMobile;
           child:  Column(
             children: [
               Text('$isMobile', style: TextStyle(color: Colors.white),),
-              isMobile ? Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
+              HeroSection(),
+              isMobile ? const Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
               
               
-              const SizedBox(
-                height: 1000,
-              )
             ],
           ),
         ),
