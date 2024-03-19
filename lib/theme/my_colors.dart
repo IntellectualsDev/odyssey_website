@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class MyColors {
-  static const Color action = Color(0xffFC6736);
+  static const Color action = Color(0xffEA0599);
   //static const Color complementary = Color(0xff2DD4D4);
   static const Color background = Color(0xff000000);
   static const Color third = Color(0xffFFB0B0);

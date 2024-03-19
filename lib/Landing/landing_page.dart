@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:odyssey_website/Landing/download_button.dart';
 import 'package:odyssey_website/Landing/hero_section.dart';
 import 'package:odyssey_website/NavBar/mobileNavBar.dart';
 import 'package:odyssey_website/NavBar/navBar.dart';
 import 'package:odyssey_website/theme/my_colors.dart';
 import 'package:sticky_headers/sticky_headers/widget.dart';
 import 'package:odyssey_website/globals.dart' as globals;
-import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-
-
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -18,9 +16,7 @@ class LandingPage extends StatefulWidget {
 }
 
 class LandingPageState extends State<LandingPage> {
-
-bool isMobile = globals.isWebMobile;
-
+  bool isMobile = globals.isWebMobile;
 
   @override
   Widget build(BuildContext context) {
@@ -29,86 +25,54 @@ bool isMobile = globals.isWebMobile;
     debugPrint("$isMobile"); //check if platform is being run on mobile
 
     return Scaffold(
-              extendBodyBehindAppBar: true, // Extend gradient behind the app bar if present
-
+      extendBodyBehindAppBar: true, // Extend gradient behind the app bar if present
       appBar: width <= 600 ? const MobileAppBar() : null,
       endDrawer: const MobileDrawer(),
       body: Container(
         decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: <Color>[MyColors.backgroundGradient1, MyColors.backgroundGradient2],
-            ),),
+          gradient: LinearGradient(
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
+            colors: <Color>[
+              MyColors.backgroundGradient1,
+              MyColors.backgroundGradient2
+            ],
+          ),
+        ),
         child: SingleChildScrollView(
-            child: StickyHeader(
-          header: (width > 600)
-              ? const NavBar(
-                  index: 0,
-                )
-              : Container(), //only show the navigation bar if the app bar is not there so just when the display is big enough
-          content: Container(
-            width: width,
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.centerLeft,
-                  end: Alignment.centerRight,
-                  colors: <Color>[MyColors.backgroundGradient1, MyColors.backgroundGradient2]),
-            ),
-            child:  Column(
-              children: [
-                Text("Screen width $width", style: TextStyle(color: Colors.white),),
-                HeroSection(),
-                isMobile ? const Text("Use desktop to download platform",style: TextStyle(color: Colors.white)) : DownloadButton(fileUrl: "gs://the-odyssey-project.appspot.com/Odyssey.dmg"),
-                
-              ],
+          child: StickyHeader(
+            header: (width >= 500)
+                ? const NavBar(
+                    index: 0,
+                  )
+                : Container(), //only show the navigation bar if the app bar is not there so just when the display is big enough
+            content: Container(
+              width: width,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: <Color>[
+                      MyColors.backgroundGradient1,
+                      MyColors.backgroundGradient2
+                    ]),
+              ),
+              child: Column(
+                children: [
+                  Text(
+                    "Screen width $width",
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  HeroSection(),
+                  
+                ],
+              ),
             ),
           ),
-        )),
+        ),
       ),
     );
   }
 }
 
-class DownloadButton extends StatelessWidget {
-  final String fileUrl;
 
-  DownloadButton({required this.fileUrl});
-
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<String>(
-      future: getDownloadUrl(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); 
-        } else if (snapshot.hasError) {
-          return SelectableText('Error: ${snapshot.error}', style: TextStyle(color: Colors.white),); // Display an error message if fetching the download URL fails
-        } else {
-          return ElevatedButton(
-            onPressed: () => downloadFile(snapshot.data!),
-            child: Text('Download Platform'),
-          );
-        }
-      },
-    );
-  }
-
-  Future<String> getDownloadUrl() async {
-    final gsReference = FirebaseStorage.instance.refFromURL(fileUrl);
-    return await gsReference.getDownloadURL();
-  }
-
-  Future<void> downloadFile(String downloadUrl) async {
-    // Use url_launcher or any other method to download the file
-    // For example:
-    // await launch(downloadUrl);
-    if (await canLaunch(downloadUrl)) {
-    await launch(downloadUrl);
-  } else {
-    throw 'Could not launch $fileUrl';
-  }
-  }
-
-
-}

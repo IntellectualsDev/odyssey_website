@@ -1,5 +1,7 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:odyssey_website/Landing/controller_animation.dart';
+import 'package:odyssey_website/Landing/download_button.dart';
 import 'package:odyssey_website/theme/my_colors.dart';
 import 'package:odyssey_website/globals.dart' as globals;
 
@@ -11,6 +13,21 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection> {
+  bool isMobile = globals.isWebMobile;
+  late Future<String> _downloadUrlFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _downloadUrlFuture = getDownloadUrl();
+  }
+
+  Future<String> getDownloadUrl() async {
+    final gsReference = FirebaseStorage.instance
+        .refFromURL("gs://the-odyssey-project.appspot.com/Odyssey.dmg");
+    return await gsReference.getDownloadURL();
+  }
+
   List<Widget> pageChildren(double width) {
     double screenWidth = MediaQuery.of(context).size.width;
     double fontSize = screenWidth / 10;
@@ -35,36 +52,47 @@ class _HeroSectionState extends State<HeroSection> {
                   fontSize: 60,
                 ),
               ),
-              Padding(
+              const Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20.0),
                 child: SizedBox(
                     //width: screenWidth / 4,
-                    child: const SelectableText(
+                    child: SelectableText(
                   "Start today and embark on a journey where arcade games meet the future",
                   style: TextStyle(color: Colors.white),
                 )),
               ),
-              MaterialButton(
-                color: MyColors.action,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(40.0))),
-                onPressed: () {},
-                child: const Padding(
-                  padding:
-                      EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
-                  child: Text(
-                    "Download",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
+              isMobile
+                  ? const Text(
+                      "Use desktop to download platform",
+                      style: TextStyle(color: Colors.white),
+                    )
+                  : FutureBuilder<String>(
+                      future: _downloadUrlFuture,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return SelectableText(
+                            'Error: ${snapshot.error}',
+                            style: TextStyle(color: Colors.white),
+                          );
+                        } else {
+                          return DownloadButton(
+                            fileUrl: snapshot.data!,
+                          );
+                        }
+                      },
+                    ),
             ],
           ),
         ),
       ),
 
       //add other widget here to either be in horizontal or vertical
-      !globals.isWebMobile ? Container(width: 500, child: const ControllerAnimation()) : Container(),//TODO add container to explain for users to go on their desktop to download the game 
+      !globals.isWebMobile
+          ? Container(width: 500, child: const ControllerAnimation())
+          : Container(), //TODO add container to explain for users to go on their desktop to download the game
     ];
   }
 
