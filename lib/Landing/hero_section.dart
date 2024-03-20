@@ -22,11 +22,19 @@ class _HeroSectionState extends State<HeroSection> {
     _downloadUrlFuture = getDownloadUrl();
   }
 
-  Future<String> getDownloadUrl() async {
-    final gsReference = FirebaseStorage.instance
-        .refFromURL("gs://the-odyssey-project.appspot.com/Odyssey.dmg");
+ Future<String> getDownloadUrl() async {
+  final gsReference = FirebaseStorage.instance
+      .refFromURL("gs://the-odyssey-project.appspot.com/Odyssey.dmg");
+
+  // Safely unwrap gsReference before calling getDownloadURL()
+  if (gsReference != null) {
     return await gsReference.getDownloadURL();
+  } else {
+    // Throw an error if gsReference is null
+    throw Exception('Storage reference is null');
   }
+}
+
 
   List<Widget> pageChildren(double width) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -39,7 +47,7 @@ class _HeroSectionState extends State<HeroSection> {
         child: Padding(
           padding: const EdgeInsets.all(20.0),
           child: Column(
-            crossAxisAlignment: screenWidth <= 1000
+            crossAxisAlignment: screenWidth < 1000
                 ? CrossAxisAlignment.center
                 : CrossAxisAlignment.start,
             children: <Widget>[

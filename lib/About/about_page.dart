@@ -21,7 +21,7 @@ double width = MediaQuery.of(context).size.width;
     double titleFontSize = width / 14;
 
     return Scaffold(
-      appBar: width <= 600
+      appBar: width < 500
           ? const MobileAppBar()
           : null,
       endDrawer: const MobileDrawer(),
@@ -31,7 +31,7 @@ double width = MediaQuery.of(context).size.width;
           child: Column(
             children: <Widget>[
               StickyHeader(
-                header: (width > 600)
+                header: (width >= 500)
                     ? NavBar(index: 1,)
                     : Container(), //only show the navigation bar if the app bar is not there so just when the display is big enough
                 content: Container(

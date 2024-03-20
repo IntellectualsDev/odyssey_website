@@ -12,7 +12,6 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
-  Color _navbarColor = Colors.transparent;
 
   @override
   Widget build(BuildContext context) {
